@@ -35,7 +35,7 @@ class AuthController extends Controller
             } elseif($user->role == 'owner'){
                 return redirect()->route('homeAdmin')->with('message', 'Login Berhasil');
             } else{
-                return redirect()->route('movie')->with('message', 'Login Berhasil');
+                return redirect()->route('showMovies')->with('message', 'Login Berhasil');
             }
         } else {
             return redirect()->route('login')->with('message', 'Username atau Password Salah');

@@ -33,7 +33,7 @@
                                         <input type="date" name="start_date" id="" class="form-control">
                                         <label for="" class="mt-2">Tanggal Akhir</label>
                                         <input type="date" name="end_date" id="" class="form-control">
-                                        <button type="submit" href="" class="btn btn-info w-100 mt-4 text-light">Cari Data</button>
+                                        <button type="submit" href="" class="btn btn-primary w-100 mt-4 text-light">Cari Data</button>
                                 </form>
                             </div>
                         </div>

@@ -30,24 +30,25 @@
 <body>
     @include('Template.nav')
     <div class="container">
-        @if (session('message'))
-        <div class="alert alert-dark">
-            {{ session('message') }}
-        </div>
-        @endif
-        <h3 class="text-center my-4">List Movie</h3>
+        
+        <h1 class="text-center my-4">List Movie</h1>
         <div class="row">
             <div class="col-3 offset-9 text-right">
-                <form class="form-inline">
+                <form action="{{ route('cari') }}" method="get" class="form-inline">
                     <div class="input-group">
                         <input type="text" name="cari" placeholder="Cari Movie...." id="cari" class="form-control">
-                        <button type="submit" class="btn btn-info">Cari</button>
+                        <button type="submit" class="btn btn-dark">Cari</button>
                     </div>
                 </form>
             </div>
         </div>
         <div class="row">
             <h5>Movie Yang Sedang Tayang</h5>
+            @if (session('message'))
+            <div class="alert alert-dark">
+                {{ session('message') }}
+            </div>
+            @endif
             @foreach ($movie as $cinema)
                 @if ($cinema->status == 'ongoing')
                     <div class="col-4">

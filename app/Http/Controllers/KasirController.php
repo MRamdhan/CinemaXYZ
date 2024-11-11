@@ -200,8 +200,11 @@ class KasirController extends Controller
 
         // dd($histories);
         $chart = (new LarapexChart)
-        ->setType('bar') // Use areaChart() instead of setType('area')
+        ->setType('bar')
         ->setTitle('Riwayat')
+        ->setColors([
+            '#003b6d'
+        ])
         ->setSubtitle('Riwayat Transaksi')
         ->setXAxis($date)
         ->setDataset([
@@ -211,5 +214,12 @@ class KasirController extends Controller
             ]
         ]);
         return view('history', ['histories' => $histories, 'chart' => $chart, 'total' => $totalProfit]);
+    }
+    function cari(Request $request) {
+        $cari = $request->input('cari');
+
+        $movie = Movie::where('name', 'like', '%' . $cari. '%')->get();
+
+        return view('home', ['movie' => $movie]);
     }
 }

@@ -29,7 +29,7 @@
                 {{ session('message') }}
             </div>
         @endif
-        <a href="{{ route('tambah') }}" class="btn bg-info mt-2" style="margin-left: 20px">Tambah Movie</a>
+        <a href="{{ route('tambah') }}" class="btn btn-primary mt-2" style="margin-left: 20px">Tambah Movie</a>
     </div>
     
     <div class="container mt-3 mb-5">
@@ -62,7 +62,7 @@
                                 <td>{{ $d->studio_name }}</td>
                                 <td>
                                     <div class="d-flex gap-1">
-                                        <a href="{{ route('edit', $d->id) }}" class="btn btn-info ">Edit</a>
+                                        <a href="{{ route('edit', $d->id) }}" class="btn btn-info text-white ">Edit</a>
                                         <a href="{{ route('trashArchived', $d->id) }}" class="btn btn-danger"
                                             onclick="return confirm('Yakin mau Archived data ini ?')">Archived</a>
                                     </div>

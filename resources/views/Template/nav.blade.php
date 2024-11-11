@@ -1,8 +1,7 @@
 
 <nav class="navbar navbar-expand-lg " style="background-color: #003b6d">
     <div class="container">
-        <a class="navbar-brand text-light" href="{{ route('showMovies') }}">AniPlex🔥</a>
-
+        <img src="img/logo.png" alt="" width="50px">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             @guest
                 <li class="nav-item">
