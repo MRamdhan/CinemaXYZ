@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\History;
+use App\Models\Log;
 use App\Models\Movie;
 use App\Models\Purchase;
 use App\Models\PurchaseTicket;
@@ -12,6 +13,9 @@ use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Attributes\Ticket;
 
 class KasirController extends Controller
 {
@@ -19,7 +23,7 @@ class KasirController extends Controller
         $movie_name = $request->movie->name;
         $movie_image = $request->movie->image;
         $movie_id = $request->movie_id;
-        return view('detail', [
+        return view('kasir.detail', [
             'movie_name' => $movie_name,
             'movie_id' => $movie_id,
             'movie_image' => $movie_image,
@@ -56,7 +60,7 @@ class KasirController extends Controller
                     }
                 }
 
-                return view('seat_selection', [
+                return view('kasir.seat_selection', [
                     'date' => date('d F'),
                     'movie' => $movie,
                     'movie_name' => $movie_name,
@@ -66,7 +70,7 @@ class KasirController extends Controller
                     'sold_total' => count($seats_sold),
                 ]);
             } else {
-                return view('seat_selection', [
+                return view('kasir.seat_selection', [
                     'date' => date('d F'),
                     'movie_name' => $movie_name,
                     'movie' => $movie,
@@ -84,7 +88,7 @@ class KasirController extends Controller
         $movie = Movie::where('id', $request->movie)->first();
         $time = $request->time_choose;
         $seats = $request->seats;
-
+        
         $day = date('l');
         if ($day == 'Saturday' || $day == 'Sunday') {
             $ticketPrice = 60000;
@@ -99,7 +103,7 @@ class KasirController extends Controller
         $totalfee = $fee;
         $total = $totalTicketPrice + $totalfee;
         if ($seats != null) {
-            return view('confirm_order', [
+            return view('kasir.confirm_order', [
                 'ticketPrice' => $ticketPrice,
                 'movie' => $movie,
                 'time' => $time,
@@ -145,7 +149,7 @@ class KasirController extends Controller
                 $change = $cash - $total;
 
                 $this->saveHistory($movie_id, date('Y-m-d'), $time, $total, $seats, $usercreate, $change, $cash);
-                return view('transac', [
+                return view('kasir.transac', [
                     'movie_name' => $movie_name,
                     'movie_id' => $movie_id,
                     'date' => date('Y-m-d'),
@@ -213,7 +217,7 @@ class KasirController extends Controller
                 'data' => $profit
             ]
         ]);
-        return view('history', ['histories' => $histories, 'chart' => $chart, 'total' => $totalProfit]);
+        return view('kasir.history', ['histories' => $histories, 'chart' => $chart, 'total' => $totalProfit]);
     }
     function cari(Request $request) {
         $cari = $request->input('cari');
@@ -221,5 +225,115 @@ class KasirController extends Controller
         $movie = Movie::where('name', 'like', '%' . $cari. '%')->get();
 
         return view('home', ['movie' => $movie]);
+    }
+
+    function filteredChartMethod(Request $request) {
+        $start = $request->input('start_date');
+        $end = $request->input('end_date');
+
+        $start = \Carbon\Carbon::parse($start)->startOfDay();
+        $end = \Carbon\Carbon::parse($end)->endOfDay();
+
+        $histories = History::with('movie')->get();
+
+
+        $histories = History::whereBetween('created_at', [$start, $end])->get();
+        $groupedHistories = $histories->groupBy(function ($history) {
+            return \Carbon\Carbon::parse($history->created_at)->format('d-m-Y');
+        })->map(function ($dailyHistories) {
+            return [
+                'date' => $dailyHistories->first()->created_at,
+                'total' => $dailyHistories->sum('total'),
+            ];
+        });
+        $date = $groupedHistories->pluck('created_at')->map(function ($date) {
+            return \Carbon\Carbon::parse($date)->format('Y-m-d');
+        })->toArray();
+
+        $profit = $groupedHistories->pluck('total')->toArray();
+
+        $totalProfit = array_sum($profit);
+
+        $chart = (new LarapexChart)
+            ->setType('bar')
+            ->setTitle('History')
+            ->setColors([
+                '#003b6d'
+            ])
+            ->setSubtitle('History Transaction')
+            ->setXAxis($date)
+            ->setDataset([
+                [
+                    'name' => 'Income',
+                    'data' => $profit
+                ]
+            ]);
+
+        return view('kasir.history', ['histories' => $histories, 'chart' => $chart, 'total' => $totalProfit])->with('message', 'Filter Data Berhasul');
+    }
+
+    function ticket(Request $request){
+        $seats = explode(',', $request->seats);
+        $purchase = Purchase::where(['movie_id' => $request->id_movie, 'time' => $request->time])->with(['ticket', 'movie'])->latest()->first();
+
+        $tickets = [];
+
+        foreach ($seats as $seat) {
+            $ticket = PurchaseTicket::where('purchase_id', $purchase->id)->where('seat', $seat)->first();
+            if ($ticket) {
+                $tickets[] = $ticket;
+            }
+        }
+        if (!empty($tickets)) {
+            $pdf = PDF::loadView('kasir.ticket', compact('tickets', 'purchase'));
+            $user = Auth::user();
+
+            Log::create([
+                'activity' => $user->username . ' Mendownload Ticket ',
+                'user_id' => $user->id,
+            ]);
+            return $pdf->download($purchase->movie->name . '.pdf');
+        } else {
+            return back()->with('message', 'Ticket tidak tersedia');
+        }
+    }
+    function inv($id_movie, $seats, $time){
+        $movie = Movie::findOrFail($id_movie);
+
+        $purchase = Purchase::where(['movie_id' => $id_movie, 'time' => $time])
+                            ->with(['ticket', 'movie'])
+                            ->latest()
+                            ->first();
+
+        if (!$purchase) {
+            return back()->with('message', 'Purchase not found');
+        }
+
+        $seatsArray = explode(',', $seats);
+        $tickets = [];
+
+        foreach ($seatsArray as $seat) {
+            $ticket = PurchaseTicket::where('purchase_id', $purchase->id)
+                                    ->where('seat', $seat)
+                                    ->first();
+            if ($ticket) {
+                $tickets[] = $ticket;
+            }
+        }
+
+        if (!empty($tickets)) {
+            $pdf = PDF::loadView('kasir.ticket', compact('tickets', 'purchase'));
+
+            $user = Auth::user();
+
+            Log::create([
+                'activity' => $user->username . ' Mendownload Ticket ',
+                'user_id' => $user->id,
+            ]);
+
+            return $pdf->download($movie->name . '.pdf');
+        } else {
+            return back()->with('message', 'Tiket tidak tersedia');
+        }
     }
 }

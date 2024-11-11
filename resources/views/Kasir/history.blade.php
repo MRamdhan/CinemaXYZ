@@ -75,6 +75,7 @@
                             <th scope="col">Total</th>
                             <th scope="col">Uang</th>
                             <th scope="col">kembalian</th>
+                            <th scope="col">Print</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,9 +89,13 @@
                                 <td>Rp. {{ number_format($history->total, '0', ',', '.') }}</td>
                                 <td>Rp. {{ number_format($history->cash, '0', ',', '.') }}</td>
                                 <td>Rp. {{ number_format($history->change, '0', ',', '.') }}</td>
+                                <td>
+                                    <a href="{{ route('inv', ['id_movie' => $history->movie->id, 'seats' => $history->seats, 'time' => $history->time]) }}" class="btn btn-primary">Print Tiket</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
+                    
                 </table>
             </div>
         </div>

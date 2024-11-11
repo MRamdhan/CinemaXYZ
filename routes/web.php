@@ -10,6 +10,8 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/filteredChart', [KasirController::class, 'filteredChartMethod'])->name('filteredChart');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/history', [KasirController::class, 'history'])->name('history');
     //ADMIN
@@ -31,13 +33,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/hapusUser/{user}', [AdminController::class, 'hapusUser'])->name('hapusUser');
 
     //KASIRR
-    Route::get('/detailmovie/{movie}', [KasirController::class, 'detailmovie'])->name('detailmovie');
-    Route::get('seatSselection', [KasirController::class, 'index'])->name('seatSelection');
-    Route::post('confirmOrder', [KasirController::class, 'confirmOrder'])->name('confirmOrder');
-    Route::post('createOrder', [KasirController::class, 'createOrder'])->name('createOrder');
-    Route::get('transaction/{id}', [KasirController::class, 'show'])->name('transaction');
-    Route::get('ticket', [KasirController::class, 'ticket'])->name('ticket');
-    Route::get('cari', [KasirController::class, 'cari'])->name('cari');
-    Route::get('/filteredChart', [KasirController::class, 'filteredChartMethod'])->name('filteredChart');
+        Route::get('/detailmovie/{movie}', [KasirController::class, 'detailmovie'])->name('detailmovie');
+        Route::get('seatSselection', [KasirController::class, 'index'])->name('seatSelection');
+        Route::post('confirmOrder', [KasirController::class, 'confirmOrder'])->name('confirmOrder');
+        Route::post('createOrder', [KasirController::class, 'createOrder'])->name('createOrder');
+        Route::get('transaction/{id}', [KasirController::class, 'show'])->name('transaction');
+        Route::get('ticket', [KasirController::class, 'ticket'])->name('ticket');
+        Route::get('ticket/{id_movie}/{seats}/{time}', [KasirController::class, 'inv'])->name('inv');
+        Route::get('cari', [KasirController::class, 'cari'])->name('cari');
 
 });
