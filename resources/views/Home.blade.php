@@ -55,7 +55,7 @@
                             <center>
                                 @if (!auth()->user())
                                     <div class="card shadow">
-                                        <a
+                                        <a href="{{ route('login') }}"
                                             style="text-decoration: none; color: black" class="gagambar">
                                             <img src="{{ asset('storage/' . $cinema->image) }}" class="card-img-top" alt=""
                                                 style="height: 500px; object-fit: cover; ">
@@ -66,7 +66,7 @@
                                 @endif
                                 @if (auth()->user())
                                     <div class="card shadow">
-                                        <a href="$"
+                                        <a href="{{ route('detailmovie', $cinema->id) }}"
                                             style="text-decoration: none; color:black" class="gagambar">
                                             <img src="{{ asset('storage/' . $cinema->image) }}" class="card-img-top" alt=""
                                                 style="height: 500px; object-fit: cover; ">

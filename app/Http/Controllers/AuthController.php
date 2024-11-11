@@ -32,7 +32,19 @@ class AuthController extends Controller
             ]);
             if($user->role == 'admin'){
                 return redirect()->route('homeAdmin')->with('message', 'Login Berhasil');
+            } elseif($user->role == 'owner'){
+                return redirect()->route('homeAdmin')->with('message', 'Login Berhasil');
+            } else{
+                return redirect()->route('movie')->with('message', 'Login Berhasil');
             }
+        } else {
+            return redirect()->route('login')->with('message', 'Username atau Password Salah');
+        }
+    }
+    function logout() {
+        if(Auth::check()){
+            Auth::logout();
+            return redirect()->route('login')->with('message', 'Logout Berhasil');
         }
     }
 }

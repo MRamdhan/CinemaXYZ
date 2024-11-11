@@ -129,8 +129,6 @@ class AdminController extends Controller
         $data =  $request->validate([
             'name' => 'required',
             'username' => 'required',
-            'password' => 'required',
-            'role' => 'required'
         ]);
 
         $data['password'] = bcrypt($request->password);

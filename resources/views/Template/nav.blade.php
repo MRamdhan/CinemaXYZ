@@ -13,7 +13,7 @@
                     <a class="nav-link text-light" href="{{ route('showMovies') }}">List Film</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="#">Riwayat Transaksi</a>
+                    <a class="nav-link text-light" href="{{ route('history') }}">Riwayat Transaksi</a>
                 </li>
             @endguest
         </ul>
@@ -29,8 +29,7 @@
                         {{ Auth::user()->username }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#">Ubah Password</a>
-                        <a href="#" class="dropdown-item">Logout</a>
+                        <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
                     </div>
                 </li>
             @endif

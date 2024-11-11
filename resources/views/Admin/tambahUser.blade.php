@@ -30,7 +30,7 @@
                     <input type="password" name="password"class="form-control" required>
                     <label for="">Role</label>
                     <select name="role" id="" class="form-control">
-                        <option value="kasir">kasir</option>
+                        <option value="kasir">Kasir</option>
                         <option value="owner">Owner</option>
                     </select>
                     @if (session('message'))

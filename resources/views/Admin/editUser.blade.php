@@ -27,7 +27,7 @@
                     <label for="">Username</label>
                     <input type="text" name="username"class="form-control" required value="{{ $user->username }}">
                     <label for="">Password</label>
-                    <input type="password" name="password"class="form-control" required>
+                    <input type="password" name="password"class="form-control">
                     <label for="">Role</label>
                     <select name="role" id="" class="form-control">
                         <option value="kasir">kasir</option>
@@ -39,7 +39,7 @@
                         </div>
                     @endif
                     <div class="mt-4">
-                        <button class="btn btn-info">Tambahkan Data</button>
+                        <button class="btn btn-info">Edit Data</button>
                         <a href="{{ route('kelolaUser') }}" class="btn btn-secondary">Cancel (back)</a>
                     </div>
 
