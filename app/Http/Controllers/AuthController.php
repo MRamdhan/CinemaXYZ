@@ -31,11 +31,11 @@ class AuthController extends Controller
                 'user_id' => $user->id
             ]);
             if($user->role == 'admin'){
-                return redirect()->route('homeAdmin')->with('message', 'Login Berhasil');
+                return redirect()->route('homeAdmin')->with('message', 'Login Berhasil, Selamat Datang '. $user->name);
             } elseif($user->role == 'owner'){
-                return redirect()->route('homeAdmin')->with('message', 'Login Berhasil');
+                return redirect()->route('homeAdmin')->with('message', 'Login Berhasil, Selamat Datang '. $user->name);
             } else{
-                return redirect()->route('showMovies')->with('message', 'Login Berhasil');
+                return redirect()->route('showMovies')->with('message', 'Login Berhasil, Selamat Datang '. $user->name);
             }
         } else {
             return redirect()->route('login')->with('message', 'Username atau Password Salah');

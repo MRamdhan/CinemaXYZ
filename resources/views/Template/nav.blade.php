@@ -47,15 +47,19 @@
                     </div>
                 </li>
             @endif
+
+
+
+            
             @if (auth()->user() && auth()->user()->role == 'owner')
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-light" href="#" id="adminDropdown" role="button"
+                    <a class="nav-link dropdown-toggle text-light" id="adminDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Owner Tampilan
+                        Logout
+                        <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                            <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
+                        </div>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="adminDropdown">
-                        <a href="#" class="dropdown-item">Beranda Owner</a>
-                    </div>
                 </li>
             @endif
         </ul>

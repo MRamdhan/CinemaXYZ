@@ -37,6 +37,13 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('1'),
             'role' => 'owner'
         ]);
+        
+        $user = User::Create([
+            'name' => 'Raffi',
+            'username' => 'Raffi ganteng',
+            'password' => bcrypt('1'),
+            'role' => 'owner'
+        ]);
 
         Genre::create([
             'name' => 'Horor'

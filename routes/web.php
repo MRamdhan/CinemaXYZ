@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\OwnerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'showMovies'])->name('showMovies');
@@ -41,5 +42,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ticket', [KasirController::class, 'ticket'])->name('ticket');
         Route::get('ticket/{id_movie}/{seats}/{time}', [KasirController::class, 'inv'])->name('inv');
         Route::get('cari', [KasirController::class, 'cari'])->name('cari');
+
+    //OWNER
+        Route::get('/homeOwner', [OwnerController::class, 'homeOwner'])->name('homeOwner');
+        Route::get('/logOwner', [OwnerController::class, 'logOwner'])->name('logOwner');
+        Route::get('/owner-filter', [OwnerController::class, 'filter'])->name('filter');
 
 });

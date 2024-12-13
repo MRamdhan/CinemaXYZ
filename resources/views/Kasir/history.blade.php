@@ -42,7 +42,7 @@
                         @if (auth()->user()->role == 'owner')
                         <div class="card">
                             <div class="card-body">
-                                <form action="{{ route('filterPdf') }}" method="get" class="form-group mt-4">
+                                <form action="#" method="get" class="form-group mt-4">
                                     @csrf
                                     <h5 class="text-center">Filter Download</h3>
                                         <label for="" class="mt-2">Tanggal Awal</label>
