@@ -33,7 +33,7 @@ class AuthController extends Controller
             if($user->role == 'admin'){
                 return redirect()->route('homeAdmin')->with('message', 'Login Berhasil, Selamat Datang '. $user->name);
             } elseif($user->role == 'owner'){
-                return redirect()->route('homeAdmin')->with('message', 'Login Berhasil, Selamat Datang '. $user->name);
+                return redirect()->route('homeOwner')->with('message', 'Login Berhasil, Selamat Datang '. $user->name);
             } else{
                 return redirect()->route('showMovies')->with('message', 'Login Berhasil, Selamat Datang '. $user->name);
             }
@@ -44,7 +44,7 @@ class AuthController extends Controller
     function logout() {
         if(Auth::check()){
             Auth::logout();
-            return redirect()->route('login')->with('message', 'Logout Berhasil');
+            return redirect()->route('showMovies')->with('message', 'Logout Berhasil');
         }
     }
 }

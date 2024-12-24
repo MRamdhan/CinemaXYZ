@@ -63,6 +63,9 @@ class DatabaseSeeder extends Seeder
         Genre::create([
             'name' => 'fantasy'
         ]);
+        Genre::create([
+            'name' => 'Romantic'
+        ]);
 
 
         Movie::create([

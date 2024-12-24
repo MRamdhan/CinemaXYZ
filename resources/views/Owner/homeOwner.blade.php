@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.bootstrap5.min.css') }}">
+    <script src={{ asset('js/jquery.js') }}></script>
+    <script src={{ asset('js/bootstrap.js') }}></script>
     <script src="{{ asset('js/jquery-3.7.0.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}"></script>
@@ -17,6 +19,7 @@
 </head>
 <body>
     @include('template.nav')
+
     <div class="container mt-2 mb-4">
         <div class="card shadow mt-3">
             @if (session('message'))
@@ -40,6 +43,7 @@
                         </div>
                     </div>
                     <button type="submit" href="" class="btn btn-info mb-4">Cari Data</button>
+                    <a href="{{ route('logOwner') }}" class="btn btn-primary mb-4"> Lihat log </a>
                 </form>
                 <table class="table table-bordered mt-3" id="example">
                     <thead class="thead-dark">

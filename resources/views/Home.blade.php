@@ -57,6 +57,7 @@
                                 @if (!auth()->user())
                                     <div class="card shadow">
                                         <a href="{{ route('login') }}"
+                                        onclick="return confirm('Anda belum login,ingin login?')"
                                             style="text-decoration: none; color: black" class="gagambar">
                                             <img src="{{ asset('storage/' . $cinema->image) }}" class="card-img-top" alt=""
                                                 style="height: 500px; object-fit: cover; ">

@@ -29,34 +29,37 @@ class KasirController extends Controller
             'movie_image' => $movie_image,
         ], compact('movie'));
     }
-    function index(Request $request) {
+
+    function index(Request $request)
+    {
         $movie_id = $request->movie_id;
         $movie_name = $request->movie_name;
         $time = $request->time;
 
-        if (Carbon::now()->format('H:i') === '00:00') {
-            PurchaseTicket::where('created_at', '<', Carbon::now()->subDay())->delete();
-        }
+        // Hapus tiket yang kadaluarsa (lebih dari sehari yang lalu)
+        PurchaseTicket::where('created_at', '<', Carbon::now()->startOfDay())->delete();
 
         if (!empty($movie_id) && !empty($time)) {
+            // Ambil pembelian untuk film dan waktu tertentu hanya untuk hari ini
             $purchase = Purchase::where([
                 ['movie_id', $movie_id],
                 ['time', $time]
-            ])->with(['ticket'])->get();
+            ])
+            ->whereDate('created_at', Carbon::today()) // Filter berdasarkan hari ini
+            ->with(['ticket'])
+            ->get();
 
             $movie = Movie::where('id', $movie_id)->get();
 
-            if ($purchase != null) {
-                $tickets = [];
-                foreach ($purchase as $value) {
-                    $ticket = PurchaseTicket::where('purchase_id', $value->id)->get();
-                    $tickets[] = $ticket;
-                }
-
+            // Jika ada pembelian tiket
+            if ($purchase->isNotEmpty()) {
                 $seats_sold = [];
-                foreach ($tickets as $ticket) {
-                    foreach ($ticket as $v) {
-                        $seats_sold[] = $v->seat;
+
+                foreach ($purchase as $value) {
+                    // Ambil tiket berdasarkan pembelian
+                    $tickets = PurchaseTicket::where('purchase_id', $value->id)->get();
+                    foreach ($tickets as $ticket) {
+                        $seats_sold[] = $ticket->seat; // Simpan kursi yang terjual
                     }
                 }
 
@@ -64,26 +67,28 @@ class KasirController extends Controller
                     'date' => date('d F'),
                     'movie' => $movie,
                     'movie_name' => $movie_name,
-                    'time_choose' => $request->time,
+                    'time_choose' => $time,
                     'purchase' => $purchase,
                     'seats_sold' => $seats_sold,
                     'sold_total' => count($seats_sold),
                 ]);
             } else {
+                // Jika tidak ada pembelian tiket untuk hari ini
                 return view('kasir.seat_selection', [
                     'date' => date('d F'),
                     'movie_name' => $movie_name,
                     'movie' => $movie,
-                    'time_choose' => $request->time,
+                    'time_choose' => $time,
                     'purchase' => $purchase,
                     'seats_sold' => [],
                     'sold_total' => 0,
                 ]);
             }
         } else {
-            return redirect()->back()->with('message', 'Parameter wajib di isi');
+            return redirect()->back()->with('message', 'Parameter wajib diisi');
         }
     }
+
     function confirmOrder(Request $request) {
         $movie = Movie::where('id', $request->movie)->first();
         $time = $request->time_choose;

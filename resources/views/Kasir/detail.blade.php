@@ -21,7 +21,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-3">
-                        <img style="card-img-top" src="{{ asset($movie_image) }}" width="300">
+                        <img src="{{ asset('storage/' . $movie->image) }}" width="300">
                     </div>
                     <div class="col-9">
                         <div class="card">

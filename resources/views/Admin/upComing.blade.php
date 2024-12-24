@@ -14,7 +14,7 @@
     <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('js/responsive.bootstrap5.min.js') }}"></script>
-    <title>Trash Dashboard</title>
+    <title>Up Coming Dashboard</title>
     <style>
     </style>
 </head>
@@ -28,7 +28,7 @@
                 {{ session('message') }}
             </div>
         @endif
-        <a href="{{ route('postTambahMovie') }}" class="btn bg-info mt-2" style="margin-left: 20px">Tambah Movie</a>
+        <a href="{{ route('tambah') }}" class="btn bg-info mt-2" style="margin-left: 20px">Tambah Movie</a>
     </div>
     <div class="container mt-3 mb-5">
         <div class="card mt-1">
