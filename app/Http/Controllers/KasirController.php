@@ -20,6 +20,10 @@ use PHPUnit\Framework\Attributes\Ticket;
 class KasirController extends Controller
 {
     function detailmovie(Request $request,Movie $movie) {
+        if (Auth::user()->role !== 'kasir') {
+            return redirect('/')->with('message', 'Hanya kasir yang dapat mengakses halaman ini!');
+        }
+        
         $movie_name = $request->movie->name;
         $movie_image = $request->movie->image;
         $movie_id = $request->movie_id;

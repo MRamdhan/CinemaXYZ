@@ -61,20 +61,24 @@
                                             style="text-decoration: none; color: black" class="gagambar">
                                             <img src="{{ asset('storage/' . $cinema->image) }}" class="card-img-top" alt=""
                                                 style="height: 500px; object-fit: cover; ">
-                                                <h3 class="mt-2">{{ $cinema->name }}</h3>
+                                            <h3 class="mt-2">{{ $cinema->name }}</h3>
                                             <h5 style="opacity:70%">{{ $cinema->genre->name }}</h5>
                                         </a>
                                     </div>
                                 @endif
                                 @if (auth()->user())
                                     <div class="card shadow">
-                                        <a href="{{ route('detailmovie', $cinema->id) }}"
-                                            style="text-decoration: none; color:black" class="gagambar">
-                                            <img src="{{ asset('storage/' . $cinema->image) }}" class="card-img-top" alt=""
-                                                style="height: 500px; object-fit: cover; ">
-                                            <h3 class="mt-2">{{ $cinema->name }}</h3>
-                                            <h5 style="opacity:70%">{{ $cinema->genre->name }}</h5>
-                                        </a>
+                                        @if(auth()->user()->role === 'kasir')
+                                            <a href="{{ route('detailmovie', $cinema->id) }}"
+                                                style="text-decoration: none; color:black" class="gagambar">
+                                                <img src="{{ asset('storage/' . $cinema->image) }}" class="card-img-top" alt=""
+                                                    style="height: 500px; object-fit: cover; ">
+                                                <h3 class="mt-2">{{ $cinema->name }}</h3>
+                                                <h5 style="opacity:70%">{{ $cinema->genre->name }}</h5>
+                                            </a>
+                                        @else
+                                            <p class="text-danger">Hanya kasir yang dapat mengakses fitur ini.</p>
+                                        @endif
                                     </div>
                                 @endif
                             </center>
@@ -112,5 +116,6 @@
     </div>
     
 </body>
+
 
 </html>

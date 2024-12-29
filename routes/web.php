@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'showMovies'])->name('showMovies');
@@ -34,14 +35,27 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/hapusUser/{user}', [AdminController::class, 'hapusUser'])->name('hapusUser');
 
     //KASIRR
+    Route::group(['middleware' => [RoleMiddleware::class . ':kasir']], function () {
         Route::get('/detailmovie/{movie}', [KasirController::class, 'detailmovie'])->name('detailmovie');
-        Route::get('seatSselection', [KasirController::class, 'index'])->name('seatSelection');
+        Route::get('seatSelection', [KasirController::class, 'index'])->name('seatSelection');
         Route::post('confirmOrder', [KasirController::class, 'confirmOrder'])->name('confirmOrder');
         Route::post('createOrder', [KasirController::class, 'createOrder'])->name('createOrder');
         Route::get('transaction/{id}', [KasirController::class, 'show'])->name('transaction');
         Route::get('ticket', [KasirController::class, 'ticket'])->name('ticket');
         Route::get('ticket/{id_movie}/{seats}/{time}', [KasirController::class, 'inv'])->name('inv');
         Route::get('cari', [KasirController::class, 'cari'])->name('cari');
+    });
+    
+    // Route::middleware([RoleMiddleware::class . ':kasir'])->group(function () {
+    //     Route::get('/detailmovie/{movie}', [KasirController::class, 'detailmovie'])->name('detailmovie');
+    //     Route::get('seatSselection', [KasirController::class, 'index'])->name('seatSelection');
+    //     Route::post('confirmOrder', [KasirController::class, 'confirmOrder'])->name('confirmOrder');
+    //     Route::post('createOrder', [KasirController::class, 'createOrder'])->name('createOrder');
+    //     Route::get('transaction/{id}', [KasirController::class, 'show'])->name('transaction');
+    //     Route::get('ticket', [KasirController::class, 'ticket'])->name('ticket');
+    //     Route::get('ticket/{id_movie}/{seats}/{time}', [KasirController::class, 'inv'])->name('inv');
+    //     Route::get('cari', [KasirController::class, 'cari'])->name('cari');
+    // });
 
     //OWNER
         Route::get('/homeOwner', [OwnerController::class, 'homeOwner'])->name('homeOwner');
