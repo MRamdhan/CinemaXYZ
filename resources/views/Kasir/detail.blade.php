@@ -34,15 +34,15 @@
                                 <b class="card-title">Sinopsis : </b>
                                 <p class="card-text">{{ $movie->deskripsi }}</p>
                                 <hr class="mt-5">
-                                <div class="d-flex">
-                                    <a href="{{ route('seatSelection', ['movie_id' => $movie->id, 'time' => '13:00']) }}"
-                                        class="btn btn-info me-3 text-light">13:00</a>
-                                    <a href="{{ route('seatSelection', ['movie_id' => $movie->id, 'time' => '16:00']) }}"
-                                        class="btn btn-info me-3 text-light">16:00</a>
-                                    <a href="{{ route('seatSelection', ['movie_id' => $movie->id, 'time' => '19:00']) }}"
-                                        class="btn btn-info me-3 text-light">19:00</a>
-                                    <a href="{{ route('seatSelection', ['movie_id' => $movie->id, 'time' => '21:00']) }}"
-                                        class="btn btn-info me-3 text-light">21:00</a>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @forelse ($showtimes as $time)
+                                        <a href="{{ route('seatSelection', ['movie_id' => $movie->id, 'time' => $time]) }}"
+                                            class="btn btn-info text-light">
+                                            {{ $time }}
+                                        </a>
+                                    @empty
+                                        <p class="text-muted">Belum ada jadwal tayang untuk film ini.</p>
+                                    @endforelse
                                 </div>
                             </div>
                         </div>

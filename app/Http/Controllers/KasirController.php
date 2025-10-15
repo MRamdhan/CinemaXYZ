@@ -24,14 +24,19 @@ class KasirController extends Controller
             return redirect('/')->with('message', 'Hanya kasir yang dapat mengakses halaman ini!');
         }
         
-        $movie_name = $request->movie->name;
-        $movie_image = $request->movie->image;
-        $movie_id = $request->movie_id;
+        // Ambil data jam tayang dari kolom `tayang`
+        $showtimes = [];
+        if (!empty($movie->tayang)) {
+            $showtimes = explode(',', $movie->tayang);
+        }
+
         return view('kasir.detail', [
-            'movie_name' => $movie_name,
-            'movie_id' => $movie_id,
-            'movie_image' => $movie_image,
-        ], compact('movie'));
+            'movie' => $movie,
+            'movie_name' => $movie->name,
+            'movie_id' => $movie->id,
+            'movie_image' => $movie->image,
+            'showtimes' => $showtimes,
+        ]);
     }
 
     function index(Request $request)

@@ -115,7 +115,15 @@
                             <label for="deskripsi" class="form-label">Sinopsis</label>
                             <textarea id="deskripsi" name="deskripsi" class="form-control" rows="4" placeholder="Masukkan sinopsis film" required></textarea>
                         </div>
+                        <div class="mb-3">
+                            <label for="tayang" class="form-label">Jam Tayang</label>
 
+                            <div id="tayang-container">
+                                <input type="time" name="tayang[]" class="form-control mb-2" required>
+                            </div>
+
+                            <button type="button" class="btn btn-sm btn-success" onclick="addShowtime()">+ Tambah Jam Tayang</button>
+                        </div>
                         <div class="form-group">
                             <label for="image" class="form-label">Gambar</label>
                             <input type="file" id="image" name="image" class="form-control" accept="image/*" onchange="previewImage()" required>
@@ -159,9 +167,20 @@
                 preview.style.display = 'none';
             }
         }
+
+        function addShowtime() {
+            const container = document.getElementById('tayang-container');
+            const input = document.createElement('input');
+            input.type = 'time';
+            input.name = 'tayang[]';
+            input.classList.add('form-control', 'mb-2');
+            container.appendChild(input);
+        }
+
     </script>
 
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+</script>
 </body>
 
 </html>

@@ -19,39 +19,55 @@ class AdminController extends Controller
         return view('Admin.tambahMovie', compact('genre', 'movie'));
     }
 
-    function postTambahMovie(Request $request) {
+    public function postTambahMovie(Request $request)
+    {
         $request->validate([
             "name" => "required",
             "genre_id" => "required",
-            "image" => "required",
+            "image" => "required|image",
             "minutes" => "required",
             "director" => "required",
             "studio_name" => "required",
+            "tayang" => "required|array",
             "studio_capacity" => "required",
             "deskripsi" => "required",
             "status" => "required",
         ]);
+
+        // Gabungkan array jam tayang jadi string, misal: "13:00,16:00,19:00"
+        $tayangList = implode(',', $request->tayang);
+
         Movie::create([
             'name' => $request->name,
             'genre_id' => $request->genre_id,
             'image' => $request->image->store('img', 'public'),
             'minutes' => $request->minutes,
+            'tayang' => $tayangList,
             'director' => $request->director,
             'studio_name' => $request->studio_name,
             'studio_capacity' => $request->studio_capacity,
             'deskripsi' => $request->deskripsi,
             'status' => $request->status,
         ]);
-        return redirect()->route('homeAdmin')->with('message', 'berhasil menambah Movie');
+
+        return redirect()->route('homeAdmin')->with('message', 'Berhasil menambah Movie');
     }
 
-    function edit(Movie $movie) {
+    function edit(Movie $movie)
+    {
         $genre = Genre::all();
-        return view('Admin.editMovie', compact('movie', 'genre'));
+
+        $showtimes = [];
+        if (!empty($movie->tayang)) {
+            $showtimes = explode(',', $movie->tayang);
+        }
+
+        return view('Admin.editMovie', compact('movie', 'genre', 'showtimes'));
     }
 
-    function postEditMovie(Request $request, Movie $movie) {
-        $data =  $request->validate([
+    function postEditMovie(Request $request, Movie $movie)
+    {
+        $data = $request->validate([
             "name" => "required",
             "genre_id" => "required",
             "image" => "",
@@ -60,17 +76,25 @@ class AdminController extends Controller
             "studio_name" => "required",
             "studio_capacity" => "required",
             "deskripsi" => "required",
-            'status' => 'required'
+            "status" => "required",
+            "tayang" => "nullable|array",
         ]);
+
         if ($request->hasFile('image')) {
             $data['image'] = $request->image->store('img', 'public');
         } else {
             unset($data['image']);
         }
+
+        if ($request->has('tayang')) {
+            $data['tayang'] = implode(',', $request->tayang);
+        }
+
         $movie->update($data);
 
         return redirect()->route('homeAdmin')->with('message', 'Movie Berhasil di edit');
     }
+
 
     function upComing() {
         $movie = Movie::all();

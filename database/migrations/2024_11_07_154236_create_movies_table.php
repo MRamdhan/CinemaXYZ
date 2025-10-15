@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('minutes');
             $table->string('director');
             $table->string('studio_name');
+            $table->string('tayang');
             $table->string('studio_capacity');
             $table->text('deskripsi');
             $table->enum('status', ['ongoing', 'upcoming','archived'])->default('ongoing');
