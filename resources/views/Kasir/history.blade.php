@@ -101,7 +101,14 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    
+                    <tfoot>
+                        <tr>
+                            <td colspan="8" class="text-center fw-bold">DOWNLOAD SEMUA DATA</td>
+                            <td class="text-center">
+                                <a href="{{ route('exportPdf', $history->movie->name) }}" class="btn btn-success">Download</a>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

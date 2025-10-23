@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('ticket', [KasirController::class, 'ticket'])->name('ticket');
         Route::get('ticket/{id_movie}/{seats}/{time}', [KasirController::class, 'inv'])->name('inv');
         Route::get('cari', [KasirController::class, 'cari'])->name('cari');
+        Route::get('exportPdf/{movieName}', [KasirController::class, 'exportPdf'])->name('exportPdf');
     });
     
     // Route::middleware([RoleMiddleware::class . ':kasir'])->group(function () {

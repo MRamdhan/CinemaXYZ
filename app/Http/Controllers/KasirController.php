@@ -350,4 +350,14 @@ class KasirController extends Controller
             return back()->with('message', 'Tiket tidak tersedia');
         }
     }
+
+    function exportPdf($movieName) {
+        $data = History::with('movie')
+        ->whereHas('movie', function ($query) use ($movieName) {
+            $query->where('name', $movieName);
+        })->get();
+        $pdf = PDF::loadView('Kasir.templatePdf', compact('data'));
+
+        return $pdf->download('Data_Transaksi' . '.pdf');
+    }
 }
