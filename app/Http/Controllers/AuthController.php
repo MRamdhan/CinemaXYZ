@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Log;
 use App\Models\Movie;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     function showMovies() {
-        $movies = Movie::with('genre')->get();
-        return view('home', ['movie' => $movies]);
+        $ongoing = Movie::with('genre')->where('status', 'ongoing')->get();
+        $upcoming = Movie::with('genre')->where('status', 'upcoming')->get();
+
+        return view('home', compact('ongoing', 'upcoming'));
     }
 
     function login() {
@@ -47,4 +50,22 @@ class AuthController extends Controller
             return redirect()->route('showMovies')->with('message', 'Logout Berhasil');
         }
     }
+    function daftar() {
+        return view('daftar');
+    }
+    function postdaftar(Request $request) {
+        $user = $request->validate([
+            'name' =>'required',
+            'username' =>'required',
+            'password' => 'required',
+        ]);
+        User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+            'role' => 'kasir',
+        ]);
+        return redirect()->route('login')->with('message', 'Pendaftaran berhasil, silahkan login!');
+    }
+    
 }

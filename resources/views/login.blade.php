@@ -1,55 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-    <link href={{ asset('css/bootstrap.css') }} rel="stylesheet">
-    <link href={{ asset('css/style.css') }} rel="stylesheet">
-    <script src={{ asset('js/jquery.js') }}></script>
-    <script src={{ asset('js/bootstrap.js') }}></script>
-    <script src="{{ asset('js/jquery-3.7.0.js') }}"></script>
-    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('js/dataTables.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('js/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('js/responsive.bootstrap5.min.js') }}"></script>
+    <title>Login | Cinema XYZ</title>
+
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+
+    <style>
+        body {
+            background-color: #ebedf3;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .login-container {
+            max-width: 900px;
+            margin: 50px auto;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .left-side {
+            background-color: #003b6d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .left-side img {
+            max-width: 250px;
+            width: 100%;
+            height: auto;
+        }
+
+        .right-side {
+            padding: 2rem;
+            background-color: #fff;
+        }
+
+        .btn-login {
+            background-color: #003b6d;
+            color: white;
+        }
+
+        .btn-login:hover {
+            background-color: #0057a3;
+        }
+
+        @media (max-width: 768px) {
+            .left-side img {
+                max-width: 180px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-container {
+                margin: 20px auto;
+            }
+
+            .card {
+                box-shadow: none;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container mt-5 col-8">
-        <form action="{{ route('postLogin') }}" method="POST" class="form-gorup">
+    <div class="container login-container">
+        <form action="{{ route('postLogin') }}" method="POST">
             @csrf
-            <div class="card shadow">
-                <div class="row">
-                    <div class="col-md-6 p-5" style="background-color: #003b6d;">
-                        <img src="{{ asset('img/logo.png') }}" class="card-img" alt="" style="width: 100%;">
+
+            <div class="card shadow-lg">
+                <div class="row g-0">
+
+                    <div class="col-md-6 left-side">
+                        <img src="{{ asset('img/logo.png') }}" alt="Logo Cinema XYZ">
                     </div>
-                    <div class="col-md-6">
-                        <h1 style="text-align: center" class="mt-4"> Cinema XYZ </h1>
+
+                    <div class="col-md-6 right-side">
+                        <h1 class="text-center mb-3">Cinema XYZ</h1>
                         <hr>
-                        <div class="card-body p-4 border-2 text-black rounded-4">
-                            <h3> Login </h3>
-                            @if (session('message'))
-                                <div class="alert alert-dark">
-                                    {{ session('message') }}
-                                </div>
-                            @endif
-                            <div class="mb-3">
-                                <label for="username">Username</label>
-                                <input type="text" name="username" id="username" class="form-control">
+
+                        <h3 class="mb-4">Login</h3>
+
+                        @if (session('message'))
+                            <div class="alert alert-dark">
+                                {{ session('message') }}
                             </div>
-                            <div class="mb-3">
-                                <label for="password">Password</label>
-                                <input type="password" name="password" id="password" class="form-control">
-                            </div>
-                            <div class="mt-3">
-                                <button class="btn text-light w-100" style="background-color:#003b6d "> Login </button>
-                            </div>
+                        @endif
+
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-semibold">Username</label>
+                            <input type="text" name="username" id="username"
+                                   class="form-control"
+                                   placeholder="Masukkan username"
+                                   required>
                         </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <input type="password" name="password" id="password"
+                                   class="form-control"
+                                   placeholder="Masukkan password"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <span>Belum memiliki akun?
+                                <a href="{{ route('daftar') }}" style="text-decoration:none">
+                                    Daftar
+                                </a>
+                            </span>
+                        </div>
+
+                        <button type="submit" class="btn btn-login w-100 fw-bold py-2">
+                            Login
+                        </button>
                     </div>
+
                 </div>
             </div>
         </form>
     </div>
 </body>
+
 </html>

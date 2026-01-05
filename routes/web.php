@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AuthController::class, 'showMovies'])->name('showMovies');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('postLogin', [AuthController::class, 'postLogin'])->name('postLogin');
+Route::get('/daftar', [AuthController::class, 'daftar'])->name('daftar');
+Route::post('/postdaftar', [AuthController::class, 'postdaftar'])->name('postdaftar');
 
 Route::middleware(['auth'])->group(function () {
 
