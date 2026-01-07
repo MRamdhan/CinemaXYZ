@@ -18,6 +18,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/filteredChart', [KasirController::class, 'filteredChartMethod'])->name('filteredChart');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/history', [KasirController::class, 'history'])->name('history');
+        Route::get('ticket/{id_movie}/{seats}/{time}', [KasirController::class, 'inv'])->name('inv');
+    
     //ADMIN
         Route::get('/homeAdmin', [AdminController::class, 'homeAdmin'])->name('homeAdmin');
         Route::get('/tambah', [AdminController::class, 'tambah'])->name('tambah');
@@ -44,9 +46,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('createOrder', [KasirController::class, 'createOrder'])->name('createOrder');
         Route::get('transaction/{id}', [KasirController::class, 'show'])->name('transaction');
         Route::get('ticket', [KasirController::class, 'ticket'])->name('ticket');
-        Route::get('ticket/{id_movie}/{seats}/{time}', [KasirController::class, 'inv'])->name('inv');
         Route::get('cari', [KasirController::class, 'cari'])->name('cari');
-        Route::get('exportPdf/{movieName}', [KasirController::class, 'exportPdf'])->name('exportPdf');
+        Route::get('exportPdf', [KasirController::class, 'exportPdf'])->name('exportPdf');
     });
     
     // Route::middleware([RoleMiddleware::class . ':kasir'])->group(function () {
@@ -62,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
 
     //OWNER
         Route::get('/homeOwner', [OwnerController::class, 'homeOwner'])->name('homeOwner');
+        Route::get('exportPdf', [OwnerController::class, 'exportPdf'])->name('exportPdf');
         Route::get('/logOwner', [OwnerController::class, 'logOwner'])->name('logOwner');
         Route::get('/owner-filter', [OwnerController::class, 'filter'])->name('filter');
 

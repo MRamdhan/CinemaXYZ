@@ -351,13 +351,11 @@ class KasirController extends Controller
         }
     }
 
-    function exportPdf($movieName) {
-        $data = History::with('movie')
-        ->whereHas('movie', function ($query) use ($movieName) {
-            $query->where('name', $movieName);
-        })->get();
-        $pdf = PDF::loadView('Kasir.templatePdf', compact('data'));
+    function exportPdf() {
+        $data = History::with('movie')->get();
 
-        return $pdf->download('Data_Transaksi' . '.pdf');
+        $pdf = PDF::loadView('kasir.templatePdf', compact('data'));
+        return $pdf->download('Semua_Data_Transaksi.pdf');
     }
+
 }

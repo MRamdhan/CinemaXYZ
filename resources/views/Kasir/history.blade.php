@@ -74,7 +74,7 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="card h-100">
                         <div class="card-body">
-                            <form action="#" method="get">
+                            <form action="{{ route('filter') }}" method="get">
                                 <h5 class="text-center mb-3">Filter Download</h5>
                                 <label>Tanggal Awal</label>
                                 <input type="date" name="start_date" class="form-control mb-2">
@@ -138,8 +138,7 @@
                         <tr>
                             <td colspan="8" class="fw-bold text-center">DOWNLOAD SEMUA DATA</td>
                             <td class="text-center">
-                                <a href="{{ route('exportPdf', $history->movie->name) }}"
-                                   class="btn btn-success btn-sm">
+                                <a href="{{ route('exportPdf') }}" class="btn btn-success btn-sm">
                                     Download
                                 </a>
                             </td>
